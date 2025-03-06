@@ -2,9 +2,9 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* ./
-RUN npm ci
+# Install dependencies
+COPY package.json ./
+RUN npm install
 
 # Copy all project files
 COPY . .
