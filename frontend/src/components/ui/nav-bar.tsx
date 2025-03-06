@@ -18,22 +18,22 @@ import { Button } from './button';
 const navItems = [
   {
     name: 'チャット',
-    href: '/chat',
+    href: '/dashboard/chat',
     icon: MessageSquare
   },
   {
     name: 'ドキュメント',
-    href: '/documents',
+    href: '/dashboard/documents',
     icon: FileText
   },
   {
     name: 'ユーザー管理',
-    href: '/admin/users',
+    href: '/dashboard/admin/users',
     icon: Users
   },
   {
     name: '設定',
-    href: '/settings',
+    href: '/dashboard/settings',
     icon: Settings
   }
 ];

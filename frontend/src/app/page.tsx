@@ -11,7 +11,7 @@ export default function Home() {
         </p>
         <div className="flex gap-4 justify-center">
           <Button asChild>
-            <Link href="/chat">チャットを始める</Link>
+            <Link href="/dashboard/chat">チャットを始める</Link>
           </Button>
           <Button variant="outline" asChild>
             <Link href="/login">ログイン</Link>
