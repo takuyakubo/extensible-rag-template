@@ -1,0 +1,70 @@
+{
+  "conversations": [
+    {
+      "id": "conv-1",
+      "title": "RAGについての会話",
+      "createdAt": "2023-01-01T10:00:00Z",
+      "updatedAt": "2023-01-01T10:30:00Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-1",
+      "conversationId": "conv-1",
+      "role": "user",
+      "content": "RAGについて教えてください",
+      "timestamp": "2023-01-01T10:00:00Z"
+    },
+    {
+      "id": "msg-2",
+      "conversationId": "conv-1",
+      "role": "assistant",
+      "content": "RAG（Retrieval Augmented Generation）は、大規模言語モデル（LLM）の生成能力と外部知識源からの情報検索を組み合わせる手法です。\n\nこの方法により、モデルはトレーニングデータに含まれていない最新情報にアクセスでき、より正確で根拠のある回答を生成できます。",
+      "timestamp": "2023-01-01T10:00:30Z",
+      "references": [
+        {
+          "id": "doc-1",
+          "title": "RAGの基本概念",
+          "content": "RAGはRetrieval Augmented Generationの略で、LLMの生成と外部知識を組み合わせる技術です。",
+          "relevanceScore": 0.95
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-1",
+      "title": "RAGの基本概念",
+      "description": "RAGシステムの基本的な概念と構成要素について",
+      "uploadedBy": "user-1",
+      "uploadedAt": "2022-12-15T08:30:00Z",
+      "fileType": "pdf",
+      "fileSize": 1024000
+    },
+    {
+      "id": "doc-2",
+      "title": "ベクトル検索入門",
+      "description": "セマンティック検索とベクトルデータベースの基礎",
+      "uploadedBy": "user-1",
+      "uploadedAt": "2022-12-16T09:45:00Z",
+      "fileType": "pdf",
+      "fileSize": 2048000
+    }
+  ],
+  "users": [
+    {
+      "id": "user-1",
+      "username": "admin",
+      "email": "admin@example.com",
+      "fullName": "System Admin",
+      "role": "admin"
+    },
+    {
+      "id": "user-2",
+      "username": "user",
+      "email": "user@example.com",
+      "fullName": "Regular User",
+      "role": "user"
+    }
+  ]
+}
