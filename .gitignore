@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Testing
+coverage/
+.nyc_output/
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Production build
+build/
+dist/
+out/
+.next/
+
+# Misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+.venv/
+venv/
+ENV/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+.project
+.classpath
+.settings/
+*.code-workspace
+
+# Docker
+.dockerignore
+
+# Database
+*.sqlite3
+*.db
+
+# Temporary files
+tmp/
+temp/
+.temp/
+
+# Log files
+logs/
+*.log
+
+# Documentation build
+site/
+docs/_build/
+.docusaurus
+
+# Jupyter Notebook
+.ipynb_checkpoints
