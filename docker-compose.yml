@@ -14,6 +14,36 @@ services:
     environment:
       - NODE_ENV=development
     command: npm run dev
+    depends_on:
+      - backend
+      - mock-api
+    networks:
+      - rag-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rag
+      - ELASTICSEARCH_HOST=elasticsearch
+      - REDIS_HOST=redis
+      - SECRET_KEY=changeThisToASecureKeyInProduction
+      - CORS_ORIGINS=http://localhost:3000
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
+    networks:
+      - rag-network
 
   # Mock API Service (for development)
   mock-api:
@@ -25,14 +55,31 @@ services:
       - "3001:3001"
     command: >
       sh -c "npm install -g json-server && json-server --watch db.json --port 3001 --host 0.0.0.0 --delay 500"
+    networks:
+      - rag-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rag
+    ports:
+      - "5432:5432"
+    networks:
+      - rag-network
 
   # Elasticsearch (for vector search)
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
     ports:
       - "9200:9200"
     volumes:
@@ -41,6 +88,21 @@ services:
       memlock:
         soft: -1
         hard: -1
+    networks:
+      - rag-network
+
+  # Redis for caching and task queue
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    networks:
+      - rag-network
+
+networks:
+  rag-network:
+    driver: bridge
 
 volumes:
+  postgres_data:
   es-data:
