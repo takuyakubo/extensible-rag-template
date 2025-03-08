@@ -18,30 +18,77 @@ export type RegisterData = {
 };
 
 export type AuthResponse = {
-  token: string;
-  user: User;
+  access_token: string;
+  token_type: string;
+  user?: User;
 };
 
+// ブラウザ環境でのみトークンを取得
+export function getAuthToken(): string | null {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('authToken');
+  }
+  return null;
+}
+
+// トークンを保存
+export function setAuthToken(token: string): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('authToken', token);
+  }
+}
+
+// トークンを削除
+export function removeAuthToken(): void {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('authToken');
+  }
+}
+
+// ログイン状態をチェック
+export function isAuthenticated(): boolean {
+  return !!getAuthToken();
+}
+
 export async function login(credentials: LoginCredentials): Promise<AuthResponse> {
-  return apiClient<AuthResponse>(`${AUTH_ENDPOINT}/login`, {
+  // Convert to FormData for OAuth2PasswordRequestForm compatibility
+  const formData = new FormData();
+  formData.append('username', credentials.username);
+  formData.append('password', credentials.password);
+
+  const response = await apiClient<AuthResponse>(`${AUTH_ENDPOINT}/login`, {
     method: 'POST',
-    body: credentials,
+    body: formData,
+    formData: true,  // Flag to indicate FormData submission
   });
+  
+  if (response.access_token) {
+    setAuthToken(response.access_token);
+  }
+  
+  return response;
 }
 
 export async function register(data: RegisterData): Promise<AuthResponse> {
-  return apiClient<AuthResponse>(`${AUTH_ENDPOINT}/register`, {
+  const response = await apiClient<AuthResponse>(`${AUTH_ENDPOINT}/register`, {
     method: 'POST',
     body: data,
   });
+  
+  if (response.access_token) {
+    setAuthToken(response.access_token);
+  }
+  
+  return response;
 }
 
 export async function logout(): Promise<void> {
+  removeAuthToken();
   return apiClient<void>(`${AUTH_ENDPOINT}/logout`, {
     method: 'POST',
   });
 }
 
 export async function getProfile(): Promise<User> {
-  return apiClient<User>(`${AUTH_ENDPOINT}/profile`);
+  return apiClient<User>(`${AUTH_ENDPOINT}/me`);
 }
