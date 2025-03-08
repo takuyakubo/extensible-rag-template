@@ -27,7 +27,7 @@ export default function LoginPage() {
       // Token is automatically saved by the login function
       
       // Redirect to dashboard after successful login
-      router.push('/dashboard');
+      router.push('/dashboard/chat');
     } catch (err: any) {
       setError(err.message || 'ログインに失敗しました');
     } finally {

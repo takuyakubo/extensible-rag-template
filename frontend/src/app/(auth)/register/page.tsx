@@ -44,15 +44,20 @@ export default function RegisterPage() {
     setError(null);
     
     try {
-      await register({
+      const response = await register({
         username: formData.username,
         email: formData.email,
         password: formData.password,
         fullName: formData.fullName,
       });
       
-      // 登録成功後、ログインページに遷移
-      router.push('/login?registered=true');
+      // モックAPIの場合は直接ダッシュボードに遷移
+      if (response.access_token) {
+        router.push('/dashboard/chat');
+      } else {
+        // 本番環境では登録成功後、ログインページに遷移
+        router.push('/login?registered=true');
+      }
     } catch (err: any) {
       console.error('登録エラー:', err);
       setError(err.message || '登録に失敗しました。もう一度お試しください。');
