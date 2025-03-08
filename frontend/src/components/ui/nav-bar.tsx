@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { 
   MessageSquare, 
@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from './button';
+import { logout } from '@/lib/api/auth';
 
 const navItems = [
   {
@@ -40,7 +41,21 @@ const navItems = [
 
 export function NavBar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logout();
+      router.push('/login');
+    } catch (error) {
+      console.error('ログアウトエラー:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <>
@@ -70,11 +85,14 @@ export function NavBar() {
           })}
         </div>
         <div className="mt-auto">
-          <Button variant="outline" className="w-full justify-start" asChild>
-            <Link href="/login">
-              <LogOut className="mr-2 h-4 w-4" />
-              ログアウト
-            </Link>
+          <Button 
+            variant="outline" 
+            className="w-full justify-start" 
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
           </Button>
         </div>
       </nav>
@@ -113,11 +131,17 @@ export function NavBar() {
               );
             })}
             <div className="pt-4 mt-4 border-t">
-              <Button variant="outline" className="w-full justify-start" asChild>
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <LogOut className="mr-3 h-5 w-5" />
-                  ログアウト
-                </Link>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start" 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                disabled={isLoggingOut}
+              >
+                <LogOut className="mr-3 h-5 w-5" />
+                {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
               </Button>
             </div>
           </nav>
